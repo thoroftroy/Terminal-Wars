@@ -151,23 +151,10 @@ save_directory = "terminalwars/saves"
 os.makedirs(save_directory, exist_ok=True)
 
 # Helper Functions
-def timed_input(timeout=1.0): # for fishing mostly
-    result = []
-
-    def read_input():
-        try:
-            result.append(input())
-        except EOFError:
-            pass
-
-    input_thread = threading.Thread(target=read_input)
-    input_thread.daemon = True
-    input_thread.start()
-    input_thread.join(timeout)
-
-    if input_thread.is_alive():
-        return None  # Timeout
-    return result[0] if result else ''
+def function_start():
+    save_to_file()
+    clear_screen()
+    update_last_action()
 
 def update_last_action(): # Updates the idle lockout timer
     with idle_lock:
@@ -331,6 +318,9 @@ def relics(): # relic management
 def pets(): # pet management
     pass
 
+def reset_monster():
+    pass
+
 def monster_death_check(): # Manages what happens after the monster dies
     pass
 
@@ -345,7 +335,9 @@ def player_attack(): # the players attack during combat
 
 # Main Functions
 def combat(): # The main combat management
-    pass
+    while True: # Ensures the game is always in combat when it should be
+        function_start() # Saves the game, clears the screen, prevents idle lockout
+        print_combat_stats()
 
 def shop(): # Manages the level ups/shop
     pass
